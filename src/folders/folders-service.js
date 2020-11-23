@@ -2,13 +2,13 @@ const FoldersService = {
   getAllFolders(knex) {
     return knex.select("*").from("folders");
   },
-  addFolder(knex, title) {
+  addFolder(knex, newFolder) {
     return knex
-      .insert(title)
+      .insert(newFolder)
       .into("folders")
       .returning("*")
       .then((rows) => {
-        return rows[0], console.log(row[0]);
+        return rows[0];
       });
   },
 };

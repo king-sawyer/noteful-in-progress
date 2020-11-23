@@ -18,20 +18,19 @@ foldersRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const title = req.body.title;
-    const newFolder = title;
-    console.log(newFolder);
+    const { title } = req.body;
+    const newFolder = { title };
     if (!title) {
       return res.status(404).json({
         error: { message: `Must include a title in request body` },
       });
     }
-    FoldersService.addFolder(req.app.get("db"), title)
-      .then((title) => {
+    FoldersService.addFolder(req.app.get("db"), newFolder)
+      .then((newFolder) => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl + `/${title.id}`))
-          .json(title);
+          .location(path.posix.join(req.originalUrl + `/${newFolder.id}`))
+          .json(newFolder);
       })
       .catch(next);
   });
