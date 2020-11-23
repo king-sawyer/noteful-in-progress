@@ -19,12 +19,21 @@ foldersRouter
   })
   .post(jsonParser, (req, res, next) => {
     const title = req.body.title;
+    const newFolder = title;
+    console.log(newFolder);
     if (!title) {
       return res.status(404).json({
         error: { message: `Must include a title in request body` },
       });
     }
-    NotesService.insertNote(req.app.get("db"));
+    FoldersService.addFolder(req.app.get("db"), title)
+      .then((title) => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl + `/${title.id}`))
+          .json(title);
+      })
+      .catch(next);
   });
 
 module.exports = foldersRouter;
